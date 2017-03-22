@@ -1,76 +1,110 @@
 #include<stdio.h>
+#include<stdlib.h>
 char board[3][3] = {'1','2','3','4','5','6','7','8','9'};
+int count = 0;
 void print(){
-	for(int i = 0;i < 3;i++){
-		for(int j = 0;j < 3;j++)
-			printf("%c ",board[i][j]);
-		printf("\n");
-	}
+	system("clear");
+	printf("\n\t\t\t-----------\n");
+	printf("\t\t\tTIC TAC TOE");
+	printf("\n\t\t\t-----------");
+	printf("\n\n");
+	printf("\t\t\t %c | %c | %c\n", board[0][0], board[0][1], board[0][2]);
+	printf("\t\t\t---|---|---\n");
+	printf("\t\t\t %c | %c | %c\n", board[1][0], board[1][1], board[1][2]);
+	printf("\t\t\t---|---|---\n");
+	printf("\t\t\t %c | %c | %c\n", board[2][0], board[2][1], board[2][2]);
 	printf("\n\n");
 }
-void player1(){
+int check(int x,int y){
+	if(board[0][y] == board[1][y] && board[1][y] == board[2][y] ||
+	   board[x][0] == board[x][1] && board[x][1] == board[x][2])
+		return 1;
+	if(x == y && board[0][0] == board[1][1] && board[1][1] == board[2][2])
+		return 1;
+	if(x+y == 2 && board[2][0] == board[1][1] && board[1][1] == board[0][2])
+		return 1;
+	return 0;
+}
+int player1(){
 	char choice;
 	int ok = 1;
-	printf("Player1's turn\n");
+	printf("\t\t\t||Player 1||\n\n");
 	do{
-		printf("Enter number where you want insert X\n");
+		printf("\t\tEnter number where you want insert X: ");
 		scanf(" %c",&choice);
 		for(int i = 0;i < 3;i++){
 			for(int j = 0;j < 3;j++){
 				if(choice == board[i][j]){
 					board[i][j] = 'X';
 					ok = 0;
+					if(check(i,j)){
+						print();
+						printf("\t\t\t-------------\n");
+						printf("\t\t\tPlayer 1 won\n");
+						printf("\t\t\t-------------\n");
+						return 1;
+					}
 				}
 				else
 					continue;
 			}
 		}
 	}while(ok);
+	++count;
+	if(count == 9){
+		print();
+		printf("\t\t\t----\n");
+		printf("\t\t\tDRAW\n");
+		printf("\t\t\t----\n");
+		return 1;
+	}
+	return 0;
 }
-void player2(){
+int player2(){
 	char choice;
 	int ok = 1;
-	printf("Player2's turn\n");
+	printf("\t\t\t||Player 2||\n\n");
 	do{
-		printf("Enter number where you want insert O\n");
+		printf("\t\tEnter number where you want insert O: ");
 		scanf(" %c",&choice);
 		for(int i = 0;i < 3;i++){
 			for(int j = 0;j < 3;j++){
 				if(choice == board[i][j]){
 					board[i][j] = 'O';
 					ok = 0;
+					if(check(i,j)){
+						print();
+						printf("\t\t\t-------------\n");
+						printf("\t\t\tPlayer 2 won\n");
+						printf("\t\t\t-------------\n");
+						return 2;
+					}
 				}
 				else
 					continue;
 			}
 		}
 	}while(ok);
-}
-int check(){
-	if(board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] == 'X'){
-		printf("Player1 won\n");
+	++count;
+	if(count == 9){
+		print();
+		printf("\t\t\t----\n");
+		printf("\t\t\tDRAW\n");
+		printf("\t\t\t----\n");
 		return 1;
 	}
-	else if(board[0][0] == board[1][1] && board[1][1] == board[2][2] && board[0][0] == 'O'){
-		printf("player2 won\n");
-		return 2;
-	}
+	return 0;
 }
 int main(){
-	printf("\n-----------\n");
-	printf("TIC TAC TOE");
-	printf("\n-----------\n\n");
-	int result;
 	print();
+	int res;
 	do{
-		player1();
+		res = player1();
+		if(res) break;
 		print();
-		player2();
+		res = player2();
+		if(res) break;
 		print();
-		result = check();
-	}while(1);
-	if(result == 1) printf("Player1 won\n");
-	else if(result == 2) printf("player2 won\n");
-	else printf("Draw\n");
+	}while(res == 0);
 	return 0;
 }
