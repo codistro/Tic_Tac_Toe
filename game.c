@@ -53,9 +53,9 @@ int player1(){
 	++count;
 	if(count == 9){
 		print();
-		printf("\t\t\t----\n");
-		printf("\t\t\tDRAW\n");
-		printf("\t\t\t----\n");
+		printf("\t\t\t    ----\n");
+		printf("\t\t\t    DRAW\n");
+		printf("\t\t\t    ----\n");
 		return 1;
 	}
 	return 0;
